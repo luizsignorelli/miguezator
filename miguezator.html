@@ -3,49 +3,74 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <script src="lib/mustache.js"></script>
+    <script src="lib/handlebars-0.9.0.pre.5.js"></script>
     <script src="lib/jquery-1.5.1.min.js"></script>
     <script src="lib/jquery.json-2.2.min.js"></script>
 
     <script src="lib/models/team.js"></script>
     <script src="lib/models/sprint.js"></script>
     <script src="lib/models/project.js"></script>
+    <script src="lib/util/convert.js"></script>
 </head>
 
 <body>
+<fieldset>
+    <legend>Time</legend>
     <div class="field">
         Nome:<br />
-        <input type="text" name="team.name" id="team.name"/>
+        <input type="text" class="team" name="team.name" id="team.name"/>
     </div>
     <div class="field">
         Quantidade de pessoas no time:<br />
-        <input type="text" name="team.people" id="team.people"/>
-    </div>
-    <div class="field">
-        Produtividade inicial:<br />
-        <input type="text" name="team.initialProductivity" id="team.initial_productivity"/>
+        <input type="text" class="team" name="team.people" id="team.people"/>
     </div>
     <div class="field">
         Sprint Inicial:<br />
-        <input type="text" name="team.initialSprint" id="team.initial_sprint"/>
+        <input type="text" class="team" name="team.initialSprint" id="team.initial_sprint"/>
+    </div>
+    <div class="field">
+        Produtividade inicial:<br />
+        <input type="text" class="team" name="team.initialProductivity" id="team.initial_productivity"/>
     </div>
     <div class="field">
         Incremento de produtividade por sprint:<br />
-        <input type="text" name="team.productivityIncrement" id="team.productivity_increment"/>
+        <input type="text" class="team" name="team.productivityIncrement" id="team.productivity_increment"/>
     </div>
     <div class="field">
         Produtividade máxima:<br />
-        <input type="text" name="team.maxProductivity" id="team.max_productivity"/>
+        <input type="text" class="team" name="team.maxProductivity" id="team.max_productivity"/>
     </div>
 
 
     <div class="actions">
         <button id="include_team" type="button">Incluir</button>
     </div>
+</fieldset>
+
+<fieldset>
+    <legend>Times</legend>
+    <div id="teams">
+
+    </div>
+</fieldset>
+
+<fieldset>
+    <legend>Projeto</legend>
+    <div class="field">
+        Tamanho do Sprint:<br />
+        <input type="text" name="team.people" id="project.sprint_length"/>
+    </div>
+    <div class="field">
+        Gerar quantos sprints?<br />
+        <input type="text" name="team.people" id="project.sprint_quantity"/>
+    </div>
+    <div class="actions">
+        <button id="generate_migue" type="button">Migué</button>
+    </div>
+</fieldset>
 
 <script type="text/javascript">
     teams = []
-
     $("#include_team").click(function(){
         var team = new Team({ people: $("#team\\.people").val(),
             initial_sprint: $("#team\\.initial_sprint").val(),
@@ -55,9 +80,16 @@
             name: $("#team\\.name").val()
         })
         teams.push(team)
-        alert(teams[0].toJSON())
+        $("#teams").html(Team.renderTeams(teams))
+        $(".team").val("")
     })
 
+    $("#generate_migue").click(function(){
+        project = new Project({ sprint_length: $("#project\\.sprint_length").val(),
+                                teams: teams
+                              }).generate_sprints($("#project\\.sprint_quantity").val())
+        alert(project.toJSON())
+    })
 </script>
 </body>
 
