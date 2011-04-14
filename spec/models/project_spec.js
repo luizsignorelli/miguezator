@@ -3,9 +3,9 @@ Screw.Unit(function() {
         var project
         var team1, team2
         before(function() {
-            team1 =  new Team({ people: 4,
-                initial_productivity: 0.7,
-                max_productivity: 0.8,
+            team1 =  new Team({ people: "4",
+                initial_productivity: "0.7",
+                max_productivity: "0.8",
                 productivity_increment: 0.1,
                 initial_sprint: 1
             })

@@ -1,2 +1,64 @@
-<script src="lib/mustache.js"></script>
-<script src="lib/jquery-1.5.1.min.js"></script>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="lib/mustache.js"></script>
+    <script src="lib/jquery-1.5.1.min.js"></script>
+    <script src="lib/jquery.json-2.2.min.js"></script>
+
+    <script src="lib/models/team.js"></script>
+    <script src="lib/models/sprint.js"></script>
+    <script src="lib/models/project.js"></script>
+</head>
+
+<body>
+    <div class="field">
+        Nome:<br />
+        <input type="text" name="team.name" id="team.name"/>
+    </div>
+    <div class="field">
+        Quantidade de pessoas no time:<br />
+        <input type="text" name="team.people" id="team.people"/>
+    </div>
+    <div class="field">
+        Produtividade inicial:<br />
+        <input type="text" name="team.initialProductivity" id="team.initial_productivity"/>
+    </div>
+    <div class="field">
+        Sprint Inicial:<br />
+        <input type="text" name="team.initialSprint" id="team.initial_sprint"/>
+    </div>
+    <div class="field">
+        Incremento de produtividade por sprint:<br />
+        <input type="text" name="team.productivityIncrement" id="team.productivity_increment"/>
+    </div>
+    <div class="field">
+        Produtividade máxima:<br />
+        <input type="text" name="team.maxProductivity" id="team.max_productivity"/>
+    </div>
+
+
+    <div class="actions">
+        <button id="include_team" type="button">Incluir</button>
+    </div>
+
+<script type="text/javascript">
+    teams = []
+
+    $("#include_team").click(function(){
+        var team = new Team({ people: $("#team\\.people").val(),
+            initial_sprint: $("#team\\.initial_sprint").val(),
+            initial_productivity: $("#team\\.initial_productivity").val(),
+            productivity_increment: $("#team\\.productivity_increment").val(),
+            max_productivity: $("#team\\.max_productivity").val(),
+            name: $("#team\\.name").val()
+        })
+        teams.push(team)
+        alert(teams[0].toJSON())
+    })
+
+</script>
+</body>
+
+</html>
