@@ -29,15 +29,15 @@
         <input type="text" class="team" name="team.initialSprint" id="team.initial_sprint"/>
     </div>
     <div class="field">
-        Produtividade inicial:<br />
+        Produtividade inicial (%):<br />
         <input type="text" class="team" name="team.initialProductivity" id="team.initial_productivity"/>
     </div>
     <div class="field">
-        Incremento de produtividade por sprint:<br />
+        Incremento de produtividade por sprint (%):<br />
         <input type="text" class="team" name="team.productivityIncrement" id="team.productivity_increment"/>
     </div>
     <div class="field">
-        Produtividade máxima:<br />
+        Produtividade máxima (%):<br />
         <input type="text" class="team" name="team.maxProductivity" id="team.max_productivity"/>
     </div>
 
@@ -67,6 +67,10 @@
     <div class="actions">
         <button id="generate_migue" type="button">Migué</button>
     </div>
+
+    <div id="sprints">
+
+    </div>
 </fieldset>
 
 <script type="text/javascript">
@@ -86,9 +90,9 @@
 
     $("#generate_migue").click(function(){
         project = new Project({ sprint_length: $("#project\\.sprint_length").val(),
-                                teams: teams
-                              }).generate_sprints($("#project\\.sprint_quantity").val())
-        alert(project.toJSON())
+            teams: teams
+        }).generate_sprints($("#project\\.sprint_quantity").val())
+        $("#sprints").html(Sprint.renderSprints(project.sprints()))
     })
 </script>
 </body>

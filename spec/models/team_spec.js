@@ -11,16 +11,16 @@ Screw.Unit(function() {
         var team1, team2
         before(function() {
             team1 =  new Team({ people: 4,
-                initial_productivity: 0.7,
-                max_productivity: 0.8,
-                productivity_increment: 0.1,
+                initial_productivity: 70,
+                max_productivity: 80,
+                productivity_increment: 10,
                 initial_sprint: 1,
                 name: "Team 1"
             })
             team2 =  new Team({ people: 5,
-                initial_productivity: 0.7,
-                max_productivity: 0.8,
-                productivity_increment: 0.1,
+                initial_productivity: 70,
+                max_productivity: 80,
+                productivity_increment: 10,
                 initial_sprint: 4,
                 name: "Team 2"
             })
@@ -29,21 +29,21 @@ Screw.Unit(function() {
         it("has an JSO representation", function(){
             var jso = team1.toJSO()
             expect(jso.people).to(equal, 4)
-            expect(jso.initial_productivity).to(equal, 0.7)
-            expect(jso.max_productivity).to(equal, 0.8)
-            expect(jso.productivity_increment).to(equal, 0.1)
+            expect(jso.initial_productivity).to(equal, 70)
+            expect(jso.max_productivity).to(equal, 80)
+            expect(jso.productivity_increment).to(equal, 10)
             expect(jso.initial_sprint).to(equal, 1)
         })
 
         it("converts string to numbers on creation", function(){
            var team = new Team({ people: "4",
-                initial_productivity: "0.7",
-                max_productivity: 0.8,
-                productivity_increment: "0.1",
+                initial_productivity: "70",
+                max_productivity: 80,
+                productivity_increment: "10",
                 initial_sprint: 1
             })
             var jso = team.toJSO()
-            expect(jso.max_productivity + jso.productivity_increment).to(equal, 0.9)
+            expect(jso.max_productivity + jso.productivity_increment).to(equal, 90)
         })
 
         it("renders a list of teams in a html table", function(){

@@ -4,15 +4,15 @@ Screw.Unit(function() {
         var team1, team2
         before(function() {
             team1 =  new Team({ people: "4",
-                initial_productivity: "0.7",
-                max_productivity: "0.8",
-                productivity_increment: 0.1,
+                initial_productivity: "70",
+                max_productivity: "80",
+                productivity_increment: 10,
                 initial_sprint: 1
             })
             team2 =  new Team({ people: 4,
-                initial_productivity: 0.5,
-                max_productivity: 0.8,
-                productivity_increment: 0.05,
+                initial_productivity: 50,
+                max_productivity: 80,
+                productivity_increment: 5,
                 initial_sprint: 3
             })
         });
@@ -54,7 +54,8 @@ Screw.Unit(function() {
             });
             it("considers the cost of team integration", function() {
                 project.generate_sprints(3)
-                expect(project.sprint(3).working_days()).to(equal, 17)
+                expect(project.sprint(3).working_days()).to(equal, 12)
+                expect(project.sprint(3).points()).to(equal, 32+20-5)
             });
         });
 
