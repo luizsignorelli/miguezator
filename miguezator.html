@@ -11,90 +11,305 @@
     <script src="lib/models/sprint.js"></script>
     <script src="lib/models/project.js"></script>
     <script src="lib/util/convert.js"></script>
+    <style type="text/css">
+
+            /*
+                moneylog.css
+                http://aurelio.net/moneylog
+            */
+
+        /* ---------------------------------------------- Reset CSS (from YUI) */
+
+        body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td { margin:0;padding:0; }
+        table { border-collapse:collapse;border-spacing:0; }
+        body { font:12px/1.231 arial,helvetica,clean,sans-serif;*font-size:small;*font:x-small; }
+        select,input,button,textarea { font:99% arial,helvetica,clean,sans-serif; }
+        table { font-size:inherit;font:100%; }
+        th,td { border-style:none;padding:.5em; }
+        p,blockquote,ul,ol,dl { margin:1em; }
+        ol,ul,dl { margin-left:2em; }
+        dl dd { margin-left:1em; }
+
+
+        /* ---------------------------------------------- Global settings */
+
+        body {
+            color:#555;            /* fg1 */
+            background-color:#fff; /* bg1 */
+        }
+        a {
+            text-decoration:none;
+            font-weight:bold;
+        }
+        input {
+            margin-right:0.25em;
+        }
+        .trigger {
+            cursor:pointer;
+        }
+        .posbar {
+            background-color:#4D89F9 !important; /* bar1 */
+        }
+        .negbar {
+            background-color:#f66 !important;   /* bar2 */
+        }
+
+        #content {
+            z-index:0;
+            padding: 10px;
+        }
+
+        fieldset{
+            padding: 5px;
+        }
+
+        /* ---------------------------------------------- Data */
+
+        #data,
+        #dataFrame {
+            display:none;
+        }
+
+        /* ---------------------------------------------- Report */
+
+        .report {
+            line-height:100%;
+        }
+        .report table {
+            margin:0 20px;
+        }
+        .report th {
+            text-align:center;
+            cursor:pointer;
+        }
+        .report th:hover {
+            color:#000;            /* fg4 */
+            background-color:#ddd; /* bg4 */
+        }
+        .report td {
+            border:1px solid #ddd; /* bd1 */
+            padding:3px 10px;
+            vertical-align:middle;
+        }
+        .report td.row-count {
+            text-align:center;
+            font-size:75%;
+            color:#aaa;            /* fg5 */
+            border-style:none;
+            background-color:#fff; /* bg1 */
+        }
+        .report td.date {
+            white-space:nowrap;
+        }
+        .report tr.future td.row-count {
+            font-style:normal;
+        }
+        .report tr:hover td {
+            background-color:#ddd; /* bg4 */
+            color:#000;            /* fg4 */
+        }
+        .report tr:hover .neg {
+            color:#f00;
+        }
+        .report tr.future {
+            background-color:#eee; /* bg6 */
+            font-style:italic;
+        }
+        .report .number {
+            text-align:right !important;
+            white-space:nowrap;
+        }
+        .report .neg {
+            color:#e33;            /* fg_red */
+        }
+        .report .hl {
+            color:#000;            /* fg4 */
+            background-color:#faa; /* bg3 */
+        }
+        .report p { /* labelNoData */
+            text-align:center;
+        }
+
+        /* ---------------------------------------------- Report - Daily */
+
+        /* Column sorting is not working for Balance, so undo formatting */
+        .report table.daily th.balance {
+            cursor:auto;
+        }
+        .report table.daily th.balance:hover {
+            color:#555;            /* fg1 */
+            background-color:#fff; /* bg1 */
+        }
+        .report table.daily tr.total {
+            background-color:#fee; /* bg5 */
+            text-align:right;
+            font-weight:bold;
+        }
+        .report table.daily tr.total td {
+            border-style:none;
+        }
+        .report table.daily tr.total table.posneg {
+            float:right;
+            font-size:90%;
+            font-weight:normal;
+        }
+        .report table.daily tr.total table.posneg td {
+            padding:0;
+            white-space:nowrap;
+        }
+        .report table.daily tr.total td.monthtotal {
+            text-align:left;
+            padding-left:0;
+        }
+        .report table.daily tr.total td.monthtotal .arrow {
+            margin-right:8px;
+        }
+
+        /* ---------------------------------------------- Report - Monthly/Yearly */
+
+        .report table.overview tr.total {
+            background-color:#fee; /* bg5 */
+            font-style:italic;
+        }
+        .report td.rowlabel {
+            font-weight:bold;
+        }
+
+        /* ---------------------------------------------- Minibars inside report table */
+
+        .report table td.minibar {
+            border-style:none !important;
+        }
+        .report table div.minibar {
+            float:left;
+        }
+        .report table td.minibar .label {
+            float:left;
+            font-size:75%;
+            color:white !important;
+        }
+
+        /* Minimum compatibility for IE5.5, IE6 */
+        #content { _margin-top:0; }
+
+    </style>
 </head>
 
 <body>
-<fieldset>
-    <legend>Time</legend>
-    <div class="field">
-        Nome:<br />
-        <input type="text" class="team" name="team.name" id="team.name"/>
-    </div>
-    <div class="field">
-        Quantidade de pessoas no time:<br />
-        <input type="text" class="team" name="team.people" id="team.people"/>
-    </div>
-    <div class="field">
-        Sprint Inicial:<br />
-        <input type="text" class="team" name="team.initialSprint" id="team.initial_sprint"/>
-    </div>
-    <div class="field">
-        Produtividade inicial (%):<br />
-        <input type="text" class="team" name="team.initialProductivity" id="team.initial_productivity"/>
-    </div>
-    <div class="field">
-        Incremento de produtividade por sprint (%):<br />
-        <input type="text" class="team" name="team.productivityIncrement" id="team.productivity_increment"/>
-    </div>
-    <div class="field">
-        Produtividade máxima (%):<br />
-        <input type="text" class="team" name="team.maxProductivity" id="team.max_productivity"/>
-    </div>
+<div id="content">
+    <div style="float:left; width:100%; height:260px">
+        <fieldset style="width:30%; height:100% ; float:left;">
+            <legend>Time</legend>
+            <div class="field">
+                Nome:<br />
+                <input type="text" class="team" name="team.name" id="team.name"/>
+            </div>
+            <div class="field">
+                Quantidade de pessoas no time:<br />
+                <input type="text" class="team" name="team.people" id="team.people"/>
+            </div>
+            <div class="field">
+                Sprint Inicial:<br />
+                <input type="text" class="team" name="team.initialSprint" id="team.initial_sprint"/>
+            </div>
+            <div class="field">
+                Produtividade inicial (%):<br />
+                <input type="text" class="team" name="team.initialProductivity" id="team.initial_productivity"/>
+            </div>
+            <div class="field">
+                Incremento de produtividade por sprint (%):<br />
+                <input type="text" class="team" name="team.productivityIncrement" id="team.productivity_increment"/>
+            </div>
+            <div class="field">
+                Produtividade máxima (%):<br />
+                <input type="text" class="team" name="team.maxProductivity" id="team.max_productivity"/>
+            </div>
 
 
-    <div class="actions">
-        <button id="include_team" type="button">Incluir</button>
-    </div>
-</fieldset>
+            <div class="actions">
+                <button id="include_team" type="button">Incluir</button>
+            </div>
+        </fieldset>
 
-<fieldset>
-    <legend>Times</legend>
-    <div id="teams">
+        <fieldset style=" width:66% ; height:100% ;float:right;">
+            <legend>Times</legend>
+            <div id="teams" class="report">
 
+            </div>
+        </fieldset>
     </div>
-</fieldset>
+    <div style="float:left; width:100%; height:260px; margin-top:30px">
+        <fieldset style="float:left; width:30%">
+            <legend>Projeto</legend>
+            <div class="field">
+                Tamanho do Sprint:<br />
+                <input type="text" id="project.sprint_length"/>
+            </div>
+            <div class="field">
+                O que vc vai chutar?<br />
+                <select id="kick_option">
+                    <option value="1">Numero de sprints</option>
+                    <option value="2">Numero de pontos</option>
+                </select>
+                <input type="text" id="project.kick"/>
+            </div>
+            <div class="actions">
+                <button id="generate_migue" type="button">Migué</button>
+            </div>
 
-<fieldset>
-    <legend>Projeto</legend>
-    <div class="field">
-        Tamanho do Sprint:<br />
-        <input type="text" name="team.people" id="project.sprint_length"/>
-    </div>
-    <div class="field">
-        Gerar quantos sprints?<br />
-        <input type="text" name="team.people" id="project.sprint_quantity"/>
-    </div>
-    <div class="actions">
-        <button id="generate_migue" type="button">Migué</button>
+            <div class="field">
+                Dias Úteis:<br />
+                <input type="text" id="project.working_days"/>
+            </div>
+            <div class="field">
+                Meses Úteis:<br />
+                <input type="text" id="project.months"/>
+            </div>
+            <div class="field">
+                Total de Pontos:<br />
+                <input type="text" id="project.points"/>
+            </div>
+        </fieldset>
+        <fieldset style="float:right; width:66%">
+            <legend>Sprints</legend>
+            <div id="sprints" class="report">
+
+            </div>
+        </fieldset>
     </div>
 
-    <div id="sprints">
-
-    </div>
-</fieldset>
-
-<script type="text/javascript">
-    teams = []
-    $("#include_team").click(function(){
-        var team = new Team({ people: $("#team\\.people").val(),
-            initial_sprint: $("#team\\.initial_sprint").val(),
-            initial_productivity: $("#team\\.initial_productivity").val(),
-            productivity_increment: $("#team\\.productivity_increment").val(),
-            max_productivity: $("#team\\.max_productivity").val(),
-            name: $("#team\\.name").val()
+    <script type="text/javascript">
+        teams = []
+        $("#include_team").click(function(){
+            var team = new Team({ people: $("#team\\.people").val(),
+                initial_sprint: $("#team\\.initial_sprint").val(),
+                initial_productivity: $("#team\\.initial_productivity").val(),
+                productivity_increment: $("#team\\.productivity_increment").val(),
+                max_productivity: $("#team\\.max_productivity").val(),
+                name: $("#team\\.name").val()
+            })
+            teams.push(team)
+            $("#teams").html(Team.renderTeams(teams))
+            //$(".team").val("")
         })
-        teams.push(team)
-        $("#teams").html(Team.renderTeams(teams))
-        $(".team").val("")
-    })
 
-    $("#generate_migue").click(function(){
-        project = new Project({ sprint_length: $("#project\\.sprint_length").val(),
-            teams: teams
-        }).generate_sprints($("#project\\.sprint_quantity").val())
-        $("#sprints").html(Sprint.renderSprints(project.sprints()))
-    })
-</script>
+        $("#generate_migue").click(function(){
+            project = new Project({ sprint_length: $("#project\\.sprint_length").val(),
+                teams: teams
+            })
+            if ($("#kick_option").val() == "1" ){
+                project.generate_sprints($("#project\\.kick").val())
+            }
+            else{
+                project.generate_sprints_from_points($("#project\\.kick").val())
+            }
+            $("#project\\.working_days").val(project.working_days())
+            $("#project\\.months").val(project.working_days()/22)
+            $("#project\\.points").val(project.points())
+            $("#sprints").html(Sprint.renderSprints(project.sprints()))
+        })
+    </script>
+</div>
 </body>
 
 </html>

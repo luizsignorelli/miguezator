@@ -59,6 +59,17 @@ Screw.Unit(function() {
             });
         });
 
+         describe('#generate sprints from the project total points', function() {
+            before(function() {
+                project = new Project({ sprint_length: 10,
+                    teams:[team1, team2] })
+            });
+            it("generates the correct number of sprints", function() {
+                project.generate_sprints_from_points(100)
+                expect(project.sprints().length).to(equal,3)
+            });
+        });
+
         it("calculates the project working days", function() {
             project = new Project({ sprint_length: 10,
                 teams:[team1] })
